@@ -127,3 +127,5 @@ perf stat -e cycles,instructions,cache-references,cache-misses \
 ```
 
 `perf stat` is Linux-specific and may be restricted by kernel permissions or virtualized hardware. The cache program itself is portable C++20; macOS and Windows require their own profiling tools if hardware-counter measurements are needed. Benchmark runs create `results/timings.csv` and plots under `plots/`; run `tests/validate_results.py` on the serial and OpenMP outputs before treating them as equivalent. The course report is intentionally a separate deliverable after the cache profiling and analysis are complete.
+
+taxi
