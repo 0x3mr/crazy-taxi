@@ -1,0 +1,6 @@
+threads=1 elements=47316745 long_trips=22498217 adjacent_ms=168.192 padded_ms=164.611 private_ms=21.2204
+threads=2 elements=47316745 long_trips=22498217 adjacent_ms=92.214 padded_ms=83.6063 private_ms=15.4396
+threads=4 elements=47316745 long_trips=22498217 adjacent_ms=53.8873 padded_ms=45.2153 private_ms=14.2586
+threads=6 elements=47316745 long_trips=22498217 adjacent_ms=50.7147 padded_ms=32.5163 private_ms=11.9252
+threads=8 elements=47316745 long_trips=22498217 adjacent_ms=42.7835 padded_ms=26.1582 private_ms=12.0566
+threads=12 elements=47316745 long_trips=22498217 adjacent_ms=33.1276 padded_ms=18.9188 private_ms=13.3031

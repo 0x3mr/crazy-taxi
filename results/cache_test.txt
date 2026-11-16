@@ -1,0 +1,11 @@
+test=stride stride=1 elements=47316745 passes=5 elapsed_ms=266.966 ns_per_element=1.12842 checksum=8.2889e+08
+test=stride stride=2 elements=47316745 passes=5 elapsed_ms=298.727 ns_per_element=1.26267 checksum=8.2889e+08
+test=stride stride=4 elements=47316745 passes=5 elapsed_ms=388.968 ns_per_element=1.6441 checksum=8.2889e+08
+test=stride stride=8 elements=47316745 passes=5 elapsed_ms=812.393 ns_per_element=3.43385 checksum=8.2889e+08
+test=stride stride=16 elements=47316745 passes=5 elapsed_ms=1087.35 ns_per_element=4.59605 checksum=8.2889e+08
+test=stride stride=32 elements=47316745 passes=5 elapsed_ms=1309.54 ns_per_element=5.53521 checksum=8.2889e+08
+test=stride stride=64 elements=47316745 passes=5 elapsed_ms=1428.99 ns_per_element=6.04012 checksum=8.2889e+08
+test=stride stride=128 elements=47316745 passes=5 elapsed_ms=1464.12 ns_per_element=6.18859 checksum=8.2889e+08
+test=stride stride=256 elements=47316745 passes=5 elapsed_ms=1698.47 ns_per_element=7.17915 checksum=8.2889e+08
+test=layout layout=aos bytes_per_trip=16 elapsed_ms=268.08 checksum=8.2889e+08
+test=layout layout=soa bytes_per_trip=8 elapsed_ms=94.9506 checksum=8.2889e+08

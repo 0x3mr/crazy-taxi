@@ -1,0 +1,9 @@
+records=9250534
+groups=5989
+strategy=dense
+read_ms=45.7924
+parse_ms=736.817
+loading_ms=782.61
+aggregation_ms=27.476
+writing_ms=13.1946
+end_to_end_ms=823.28

@@ -1,0 +1,152 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 42.86      0.18     0.18  9250534     0.00     0.00  taxi::parse_line(std::basic_string_view<char, std::char_traits<char> >)
+ 19.05      0.26     0.08                             _mcount_private
+  9.52      0.30     0.04        8     5.00    27.50  taxi::parse_into(std::basic_string_view<char, std::char_traits<char> >, taxi::Trip*, unsigned long long)
+  9.52      0.34     0.04                             __fentry__
+  7.14      0.37     0.03       17     1.76    16.47  __gcc_deregister_frame
+  7.14      0.40     0.03        8     3.75     3.75  taxi::line_count(std::basic_string_view<char, std::char_traits<char> >)
+  4.76      0.42     0.02                             int taxi::(anonymous namespace)::parse_field<int>(std::basic_string_view<char, std::char_traits<char> >, char const*)
+  0.00      0.42     0.00 18501069     0.00     0.00  taxi::write_results(std::filesystem::__cxx11::path const&, std::map<taxi::Key, taxi::Aggregate, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > > const&)
+  0.00      0.42     0.00     5989     0.00     0.00  std::_Rb_tree<taxi::Key, std::pair<taxi::Key const, taxi::Aggregate>, std::_Select1st<std::pair<taxi::Key const, taxi::Aggregate> >, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<taxi::Key const, taxi::Aggregate> >, taxi::Key const&)
+  0.00      0.42     0.00        6     0.00     0.00  bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)
+  0.00      0.42     0.00        4     0.00     0.00  std::__codecvt_abstract_base<wchar_t, char, _Mbstatet>::in(_Mbstatet&, char const*, char const*, char const*&, wchar_t*, wchar_t*, wchar_t*&) const
+  0.00      0.42     0.00        4     0.00     0.00  auto std::filesystem::__cxx11::path::_S_convert<char>(char const*, char const*)
+  0.00      0.42     0.00        4     0.00     0.00  std::vector<unsigned long long, std::allocator<unsigned long long> >::~vector()
+  0.00      0.42     0.00        4     0.00     0.00  std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose()
+  0.00      0.42     0.00        3     0.00     0.00  std::_Vector_base<unsigned long long, std::allocator<unsigned long long> >::_M_create_storage(unsigned long long)
+  0.00      0.42     0.00        2     0.00     0.00  taxi::DenseTable::DenseTable(int, int)
+  0.00      0.42     0.00        2     0.00     0.00  std::filesystem::__cxx11::path::~path()
+  0.00      0.42     0.00        1     0.00     0.00  taxi::DenseTable::merge(taxi::DenseTable const&)
+  0.00      0.42     0.00        1     0.00     0.00  taxi::DenseTable::~DenseTable()
+  0.00      0.42     0.00        1     0.00     0.00  taxi::write_results(std::ostream&, std::map<taxi::Key, taxi::Aggregate, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > > const&)
+  0.00      0.42     0.00        1     0.00     0.00  taxi::read_file(std::filesystem::__cxx11::path const&, unsigned long long&)
+  0.00      0.42     0.00        1     0.00     0.00  int __gnu_cxx::__stoa<long, int, char, int>(long (*)(char const*, char**, int), char const*, char const*, unsigned long long*, int)
+  0.00      0.42     0.00        1     0.00     0.00  taxi::DenseTable::to_results() const
+  0.00      0.42     0.00        1     0.00     0.00  std::vector<std::__exception_ptr::exception_ptr, std::allocator<std::__exception_ptr::exception_ptr> >::~vector()
+
+			Call graph
+
+
+granularity: each sample hit covers 4 byte(s) for 2.38% of 0.42 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     66.7    0.00    0.28                 main [1]
+                0.03    0.25      17/17          __gcc_deregister_frame [2]
+                0.00    0.00       6/6           bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [86]
+                0.00    0.00       4/4           auto std::filesystem::__cxx11::path::_S_convert<char>(char const*, char const*) [88]
+                0.00    0.00       4/4           std::vector<unsigned long long, std::allocator<unsigned long long> >::~vector() [89]
+                0.00    0.00       2/4           std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [90]
+                0.00    0.00       1/1           taxi::read_file(std::filesystem::__cxx11::path const&, unsigned long long&) [97]
+                0.00    0.00       1/3           std::_Vector_base<unsigned long long, std::allocator<unsigned long long> >::_M_create_storage(unsigned long long) [91]
+                0.00    0.00       1/1           std::vector<std::__exception_ptr::exception_ptr, std::allocator<std::__exception_ptr::exception_ptr> >::~vector() [100]
+                0.00    0.00       1/18501069     taxi::write_results(std::filesystem::__cxx11::path const&, std::map<taxi::Key, taxi::Aggregate, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > > const&) [84]
+                0.00    0.00       1/2           std::filesystem::__cxx11::path::~path() [93]
+                0.00    0.00       1/1           int __gnu_cxx::__stoa<long, int, char, int>(long (*)(char const*, char**, int), char const*, char const*, unsigned long long*, int) [98]
+                0.00    0.00       1/2           taxi::DenseTable::DenseTable(int, int) [92]
+                0.00    0.00       1/1           taxi::DenseTable::to_results() const [99]
+                0.00    0.00       1/1           taxi::DenseTable::~DenseTable() [95]
+-----------------------------------------------
+                                 571             __gcc_deregister_frame [2]
+                0.03    0.25      17/17          main [1]
+[2]     66.7    0.03    0.25      17+571     __gcc_deregister_frame [2]
+                0.04    0.18       8/8           taxi::parse_into(std::basic_string_view<char, std::char_traits<char> >, taxi::Trip*, unsigned long long) [3]
+                0.03    0.00       8/8           taxi::line_count(std::basic_string_view<char, std::char_traits<char> >) [7]
+                0.00    0.00       1/2           taxi::DenseTable::DenseTable(int, int) [92]
+                0.00    0.00       1/1           taxi::DenseTable::merge(taxi::DenseTable const&) [94]
+                                 571             __gcc_deregister_frame [2]
+-----------------------------------------------
+                0.04    0.18       8/8           __gcc_deregister_frame [2]
+[3]     52.4    0.04    0.18       8         taxi::parse_into(std::basic_string_view<char, std::char_traits<char> >, taxi::Trip*, unsigned long long) [3]
+                0.18    0.00 9250534/9250534     taxi::parse_line(std::basic_string_view<char, std::char_traits<char> >) [4]
+-----------------------------------------------
+                0.18    0.00 9250534/9250534     taxi::parse_into(std::basic_string_view<char, std::char_traits<char> >, taxi::Trip*, unsigned long long) [3]
+[4]     42.9    0.18    0.00 9250534         taxi::parse_line(std::basic_string_view<char, std::char_traits<char> >) [4]
+                0.00    0.00 18501068/18501069     taxi::write_results(std::filesystem::__cxx11::path const&, std::map<taxi::Key, taxi::Aggregate, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > > const&) [84]
+-----------------------------------------------
+                                                 <spontaneous>
+[5]     19.0    0.08    0.00                 _mcount_private [5]
+-----------------------------------------------
+                                                 <spontaneous>
+[6]      9.5    0.04    0.00                 __fentry__ [6]
+-----------------------------------------------
+                0.03    0.00       8/8           __gcc_deregister_frame [2]
+[7]      7.1    0.03    0.00       8         taxi::line_count(std::basic_string_view<char, std::char_traits<char> >) [7]
+-----------------------------------------------
+                                                 <spontaneous>
+[8]      4.8    0.02    0.00                 int taxi::(anonymous namespace)::parse_field<int>(std::basic_string_view<char, std::char_traits<char> >, char const*) [8]
+-----------------------------------------------
+                0.00    0.00       1/18501069     main [1]
+                0.00    0.00 18501068/18501069     taxi::parse_line(std::basic_string_view<char, std::char_traits<char> >) [4]
+[84]     0.0    0.00    0.00 18501069         taxi::write_results(std::filesystem::__cxx11::path const&, std::map<taxi::Key, taxi::Aggregate, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > > const&) [84]
+                0.00    0.00       1/1           taxi::write_results(std::ostream&, std::map<taxi::Key, taxi::Aggregate, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > > const&) [96]
+-----------------------------------------------
+                0.00    0.00    5989/5989        taxi::DenseTable::to_results() const [99]
+[85]     0.0    0.00    0.00    5989         std::_Rb_tree<taxi::Key, std::pair<taxi::Key const, taxi::Aggregate>, std::_Select1st<std::pair<taxi::Key const, taxi::Aggregate> >, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<taxi::Key const, taxi::Aggregate> >, taxi::Key const&) [85]
+-----------------------------------------------
+                0.00    0.00       6/6           main [1]
+[86]     0.0    0.00    0.00       6         bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*) [86]
+-----------------------------------------------
+                0.00    0.00       4/4           auto std::filesystem::__cxx11::path::_S_convert<char>(char const*, char const*) [88]
+[87]     0.0    0.00    0.00       4         std::__codecvt_abstract_base<wchar_t, char, _Mbstatet>::in(_Mbstatet&, char const*, char const*, char const*&, wchar_t*, wchar_t*, wchar_t*&) const [87]
+-----------------------------------------------
+                0.00    0.00       4/4           main [1]
+[88]     0.0    0.00    0.00       4         auto std::filesystem::__cxx11::path::_S_convert<char>(char const*, char const*) [88]
+                0.00    0.00       4/4           std::__codecvt_abstract_base<wchar_t, char, _Mbstatet>::in(_Mbstatet&, char const*, char const*, char const*&, wchar_t*, wchar_t*, wchar_t*&) const [87]
+-----------------------------------------------
+                0.00    0.00       4/4           main [1]
+[89]     0.0    0.00    0.00       4         std::vector<unsigned long long, std::allocator<unsigned long long> >::~vector() [89]
+-----------------------------------------------
+                0.00    0.00       2/4           (anonymous namespace)::Options::~Options() [108]
+                0.00    0.00       2/4           main [1]
+[90]     0.0    0.00    0.00       4         std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() [90]
+-----------------------------------------------
+                0.00    0.00       1/3           main [1]
+                0.00    0.00       2/3           (anonymous namespace)::Options::~Options() [108]
+[91]     0.0    0.00    0.00       3         std::_Vector_base<unsigned long long, std::allocator<unsigned long long> >::_M_create_storage(unsigned long long) [91]
+-----------------------------------------------
+                0.00    0.00       1/2           __gcc_deregister_frame [2]
+                0.00    0.00       1/2           main [1]
+[92]     0.0    0.00    0.00       2         taxi::DenseTable::DenseTable(int, int) [92]
+-----------------------------------------------
+                0.00    0.00       1/2           (anonymous namespace)::Options::~Options() [108]
+                0.00    0.00       1/2           main [1]
+[93]     0.0    0.00    0.00       2         std::filesystem::__cxx11::path::~path() [93]
+-----------------------------------------------
+                0.00    0.00       1/1           __gcc_deregister_frame [2]
+[94]     0.0    0.00    0.00       1         taxi::DenseTable::merge(taxi::DenseTable const&) [94]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[95]     0.0    0.00    0.00       1         taxi::DenseTable::~DenseTable() [95]
+-----------------------------------------------
+                0.00    0.00       1/1           taxi::write_results(std::filesystem::__cxx11::path const&, std::map<taxi::Key, taxi::Aggregate, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > > const&) [84]
+[96]     0.0    0.00    0.00       1         taxi::write_results(std::ostream&, std::map<taxi::Key, taxi::Aggregate, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > > const&) [96]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[97]     0.0    0.00    0.00       1         taxi::read_file(std::filesystem::__cxx11::path const&, unsigned long long&) [97]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[98]     0.0    0.00    0.00       1         int __gnu_cxx::__stoa<long, int, char, int>(long (*)(char const*, char**, int), char const*, char const*, unsigned long long*, int) [98]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[99]     0.0    0.00    0.00       1         taxi::DenseTable::to_results() const [99]
+                0.00    0.00    5989/5989        std::_Rb_tree<taxi::Key, std::pair<taxi::Key const, taxi::Aggregate>, std::_Select1st<std::pair<taxi::Key const, taxi::Aggregate> >, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<taxi::Key const, taxi::Aggregate> >, taxi::Key const&) [85]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[100]    0.0    0.00    0.00       1         std::vector<std::__exception_ptr::exception_ptr, std::allocator<std::__exception_ptr::exception_ptr> >::~vector() [100]
+-----------------------------------------------
+
+Index by function name
+
+  [94] taxi::DenseTable::merge(taxi::DenseTable const&) [96] taxi::write_results(std::ostream&, std::map<taxi::Key, taxi::Aggregate, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > > const&) [100] std::vector<std::__exception_ptr::exception_ptr, std::allocator<std::__exception_ptr::exception_ptr> >::~vector()
+  [92] taxi::DenseTable::DenseTable(int, int) [97] taxi::read_file(std::filesystem::__cxx11::path const&, unsigned long long&) [89] std::vector<unsigned long long, std::allocator<unsigned long long> >::~vector()
+  [95] taxi::DenseTable::~DenseTable() [98] int __gnu_cxx::__stoa<long, int, char, int>(long (*)(char const*, char**, int), char const*, char const*, unsigned long long*, int) [90] std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose()
+   [7] taxi::line_count(std::basic_string_view<char, std::char_traits<char> >) [99] taxi::DenseTable::to_results() const [85] std::_Rb_tree<taxi::Key, std::pair<taxi::Key const, taxi::Aggregate>, std::_Select1st<std::pair<taxi::Key const, taxi::Aggregate> >, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > >::_M_get_insert_hint_unique_pos(std::_Rb_tree_const_iterator<std::pair<taxi::Key const, taxi::Aggregate> >, taxi::Key const&)
+   [3] taxi::parse_into(std::basic_string_view<char, std::char_traits<char> >, taxi::Trip*, unsigned long long) [87] std::__codecvt_abstract_base<wchar_t, char, _Mbstatet>::in(_Mbstatet&, char const*, char const*, char const*&, wchar_t*, wchar_t*, wchar_t*&) const [86] bool std::operator==<char, std::char_traits<char>, std::allocator<char> >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char const*)
+   [4] taxi::parse_line(std::basic_string_view<char, std::char_traits<char> >) [88] auto std::filesystem::__cxx11::path::_S_convert<char>(char const*, char const*) [6] __fentry__
+   [8] int taxi::(anonymous namespace)::parse_field<int>(std::basic_string_view<char, std::char_traits<char> >, char const*) [93] std::filesystem::__cxx11::path::~path() [2] __gcc_deregister_frame
+  [84] taxi::write_results(std::filesystem::__cxx11::path const&, std::map<taxi::Key, taxi::Aggregate, std::less<taxi::Key>, std::allocator<std::pair<taxi::Key const, taxi::Aggregate> > > const&) [91] std::_Vector_base<unsigned long long, std::allocator<unsigned long long> >::_M_create_storage(unsigned long long) [5] _mcount_private

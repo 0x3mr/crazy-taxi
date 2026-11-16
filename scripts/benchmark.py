@@ -1,60 +1,125 @@
 #!/usr/bin/env python3
-"""Run repeated serial/OpenMP timings and save reproducible CSV measurements."""
-import argparse,csv,statistics,subprocess,tempfile
+"""Run the serial and OpenMP programs repeatedly and store one CSV row per run.
+
+Experiments (all with --runs repetitions):
+  scaling   serial + OpenMP 'local' strategy, every schedule x thread count,
+            on the 100 MB, 250 MB and full datasets (dynamic uses chunk 4096,
+            because chunk 1 costs about 2.5 us per iteration in libgomp)
+  strategy  every aggregation strategy (local/reduction/atomic/critical/map),
+            static schedule, on the 100 MB sample
+  chunk     static, dynamic and guided with chunk sizes 1..65536, 100 MB sample
+            (chunk 1 is repeated only 3 times because dynamic,1 is very slow)
+Medians, speedup and efficiency are computed afterwards by summarize.py.
+"""
+import argparse
+import csv
+import subprocess
+import sys
+import tempfile
 from pathlib import Path
 
-def run(executable,args):
-    result=subprocess.run([str(executable),*map(str,args)],capture_output=True,text=True)
-    if result.returncode: raise RuntimeError(result.stderr.strip() or f'command failed: {executable}')
-    values={}
+FIELDS = ['experiment', 'dataset', 'dataset_size_bytes', 'record_count', 'implementation', 'strategy',
+          'thread_count', 'schedule', 'chunk', 'run_number', 'read_ms', 'parse_ms', 'loading_ms',
+          'aggregation_ms', 'writing_ms', 'end_to_end_ms']
+TIMES = ['read_ms', 'parse_ms', 'loading_ms', 'aggregation_ms', 'writing_ms', 'end_to_end_ms']
+
+
+def run(executable, args):
+    result = subprocess.run([str(executable), *map(str, args)], capture_output=True, text=True)
+    if result.returncode:
+        raise RuntimeError(result.stderr.strip() or f'command failed: {executable}')
+    values = {}
     for line in result.stdout.splitlines():
-        if '=' in line:
-            key,value=line.split('=',1)
-            try: values[key]=float(value)
-            except ValueError: pass
-    required={'records','loading_ms','aggregation_ms','writing_ms','end_to_end_ms'}
-    if not required.issubset(values): raise RuntimeError(f'Unrecognized timing output from {executable}: {result.stdout}')
+        key, _, value = line.partition('=')
+        try:
+            values[key] = float(value)
+        except ValueError:
+            pass
+    if not {'records', *TIMES} <= values.keys():
+        raise RuntimeError(f'Unrecognized timing output from {executable}: {result.stdout}')
     return values
 
-def write_csv(path,rows):
-    path.parent.mkdir(parents=True,exist_ok=True)
-    fields=['dataset','dataset_size_bytes','record_count','implementation','thread_count','schedule','run_number','loading_ms','aggregation_ms','writing_ms','end_to_end_ms','speedup','efficiency','estimated_serial_fraction']
-    with path.open('w',newline='',encoding='utf-8') as f:
-        w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(rows)
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--serial',type=Path,default=Path('build/serial'));p.add_argument('--openmp',type=Path,default=Path('build/openmp'))
-    p.add_argument('--samples-dir',type=Path,default=Path('data/samples'));p.add_argument('--full',type=Path,default=Path('data/processed/taxi_2025_clean.csv'))
-    p.add_argument('--output',type=Path,default=Path('results/timings.csv'));p.add_argument('--runs',type=int,default=3);p.add_argument('--threads',default='1,2,4,8');p.add_argument('--schedules',default='static,dynamic,guided');p.add_argument('--smoke',action='store_true')
-    a=p.parse_args();
-    if a.runs<1 or (not a.smoke and a.runs<3):p.error('use at least three runs for benchmark experiments')
-    threads=[int(x) for x in a.threads.split(',')];schedules=a.schedules.split(','); rows=[]
-    smoke_temp=None
-    output_temp=tempfile.TemporaryDirectory(prefix='crazy-taxi-bench-output-')
-    intermediate_dir=Path(output_temp.name)
-    if a.smoke:
-        smoke_temp=tempfile.TemporaryDirectory(prefix='crazy-taxi-bench-')
-        sample=Path(smoke_temp.name)/'small.csv';sample.write_text('pickup_zone_id,hour_of_day,trip_distance\n1,1,1.0\n1,1,2.0\n-3,23,4.0\n',encoding='utf-8')
-        datasets=[('synthetic-smoke',sample)]
-    else:
-        datasets=[('100mb',a.samples_dir/'taxi_100mb.csv'),('500mb',a.samples_dir/'taxi_500mb.csv'),('full',a.full)]
-    for name,path in datasets:
-        if not path.is_file():raise FileNotFoundError(f'Missing {name} dataset: {path}')
-        size=path.stat().st_size
-        count=max(0,sum(1 for _ in path.open(encoding='utf-8'))-1)
-        serial_runs=[run(a.serial,['--input',path,'--output',intermediate_dir/'serial.csv']) for _ in range(a.runs)]
-        serial_median=statistics.median(x['aggregation_ms'] for x in serial_runs)
-        for i,m in enumerate(serial_runs,1):rows.append(dict(dataset=name,dataset_size_bytes=size,record_count=int(m['records']),implementation='serial',thread_count=1,schedule='none',run_number=i,loading_ms=m['loading_ms'],aggregation_ms=m['aggregation_ms'],writing_ms=m['writing_ms'],end_to_end_ms=m['end_to_end_ms'],speedup=1,efficiency=1,estimated_serial_fraction=''))
-        if int(serial_runs[0]['records'])!=count:raise RuntimeError(f'{name}: record count changed during benchmark')
-        for schedule in schedules:
-            for thread_count in threads:
-                for index in range(1,a.runs+1):
-                    m=run(a.openmp,['--input',path,'--output',intermediate_dir/'openmp.csv','--threads',thread_count,'--schedule',schedule])
-                    speed=serial_median/m['aggregation_ms'] if m['aggregation_ms'] else 0.0
-                    efficiency=speed/thread_count
-                    fraction='' if thread_count==1 else (1/speed-1/thread_count)/(1-1/thread_count) if speed else ''
-                    rows.append(dict(dataset=name,dataset_size_bytes=size,record_count=int(m['records']),implementation='openmp',thread_count=thread_count,schedule=schedule,run_number=index,loading_ms=m['loading_ms'],aggregation_ms=m['aggregation_ms'],writing_ms=m['writing_ms'],end_to_end_ms=m['end_to_end_ms'],speedup=speed,efficiency=efficiency,estimated_serial_fraction=fraction))
-    write_csv(a.output,rows);print(f'Wrote {len(rows)} timing rows to {a.output}')
-    if smoke_temp: smoke_temp.cleanup()
-    output_temp.cleanup()
-if __name__=='__main__':main()
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument('--serial', type=Path, default=Path('build/serial'))
+    p.add_argument('--openmp', type=Path, default=Path('build/openmp'))
+    p.add_argument('--samples-dir', type=Path, default=Path('data/samples'))
+    p.add_argument('--full', type=Path, default=Path('data/processed/taxi_2025_clean.csv'))
+    p.add_argument('--output', type=Path, default=Path('results/timings.csv'))
+    p.add_argument('--runs', type=int, default=3)
+    p.add_argument('--threads', default='1,2,4,8,12')
+    p.add_argument('--schedules', default='static,dynamic,guided')
+    p.add_argument('--experiments', default='scaling,strategy,chunk')
+    p.add_argument('--smoke', action='store_true', help='tiny synthetic input, only checks that the runner works')
+    a = p.parse_args()
+    if a.runs < 1 or (not a.smoke and a.runs < 3):
+        p.error('use at least three runs for benchmark experiments')
+    threads = [int(x) for x in a.threads.split(',')]
+    schedules = a.schedules.split(',')
+    experiments = set(a.experiments.split(','))
+
+    with tempfile.TemporaryDirectory(prefix='crazy-taxi-bench-') as tmp:
+        tmp = Path(tmp)
+        if a.smoke:
+            sample = tmp / 'small.csv'
+            sample.write_text('pickup_zone_id,hour_of_day,trip_distance\n1,1,1.0\n1,1,2.0\n3,23,4.0\n', encoding='utf-8')
+            datasets = {'smoke': sample}
+            threads, schedules, experiments = [1, 2], ['static'], {'scaling', 'strategy'}
+            strategy_set, chunk_set = 'smoke', 'smoke'
+        else:
+            datasets = {'100mb': a.samples_dir / 'taxi_100mb.csv', '250mb': a.samples_dir / 'taxi_250mb.csv', 'full': a.full}
+            strategy_set, chunk_set = '100mb', '100mb'
+        for name, path in datasets.items():
+            if not path.is_file():
+                raise FileNotFoundError(f'Missing {name} dataset: {path}')
+
+        rows = []
+
+        def record(experiment, dataset, impl, strategy, t, schedule, chunk, args, exe, runs=None):
+            path = datasets[dataset]
+            for i in range(1, (runs or a.runs) + 1):
+                m = run(exe, ['--input', path, '--output', tmp / 'out.csv', *args])
+                rows.append(dict(experiment=experiment, dataset=dataset, dataset_size_bytes=path.stat().st_size,
+                                 record_count=int(m['records']), implementation=impl, strategy=strategy,
+                                 thread_count=t, schedule=schedule, chunk=chunk, run_number=i,
+                                 **{k: m[k] for k in TIMES}))
+            last = rows[-1]
+            print(f"{experiment:8} {dataset:6} {impl:6} {strategy:9} t={t:<2} {schedule:7} chunk={chunk:<5} "
+                  f"parse={last['parse_ms']:.0f} agg={last['aggregation_ms']:.1f} total={last['end_to_end_ms']:.0f} ms", flush=True)
+
+        if 'scaling' in experiments:
+            for name in datasets:
+                record('scaling', name, 'serial', 'dense', 1, 'none', 0, [], a.serial)
+                for schedule in schedules:
+                    chunk = 4096 if schedule == 'dynamic' else 0
+                    for t in threads:
+                        record('scaling', name, 'openmp', 'local', t, schedule, chunk,
+                               ['--threads', t, '--schedule', schedule, '--chunk', chunk], a.openmp)
+        if 'strategy' in experiments:
+            record('strategy', strategy_set, 'serial', 'map', 1, 'none', 0, ['--strategy', 'map'], a.serial)
+            for strategy in ('local', 'reduction', 'atomic', 'critical', 'map'):
+                for t in threads:
+                    record('strategy', strategy_set, 'openmp', strategy, t, 'static', 0,
+                           ['--threads', t, '--schedule', 'static', '--strategy', strategy], a.openmp)
+        if 'chunk' in experiments:
+            t = max(x for x in threads if x <= 8)
+            for schedule in ('static', 'dynamic', 'guided'):
+                for chunk in (1, 64, 1024, 4096, 65536):
+                    record('chunk', chunk_set, 'openmp', 'local', t, schedule, chunk,
+                           ['--threads', t, '--schedule', schedule, '--chunk', chunk], a.openmp,
+                           runs=min(a.runs, 3) if chunk == 1 else None)
+
+    a.output.parent.mkdir(parents=True, exist_ok=True)
+    with a.output.open('w', newline='', encoding='utf-8') as f:
+        w = csv.DictWriter(f, fieldnames=FIELDS)
+        w.writeheader()
+        w.writerows(rows)
+    print(f'Wrote {len(rows)} timing rows to {a.output}')
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except (RuntimeError, FileNotFoundError) as e:
+        sys.exit(f'benchmark: {e}')

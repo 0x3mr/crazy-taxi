@@ -1,0 +1,2 @@
+records=47316745 groups=6159 counted=47316745 max_relative_sum_error=3.54e-14
+result matches the PyArrow group-by
