@@ -1,6 +1,6 @@
 # Crazy Taxi – Phase 1 Report: Parallel Foundations
 
-<p class="subtitle">SW 401 Parallel and Distributed Systems, Fall 2025 · Amr Abdelfattah (Parallelization Lead), Momen Sanad (Performance Analyst), Khalid (Code Integrator / Tester), Abdelrahman Abdelrassoul (Documentation Coordinator) · Repository: github.com/0x3mr/crazy-taxi</p>
+<p class="subtitle">SW 401 Parallel and Distributed Systems, Fall 2025 · Amr Abdelfattah (Parallelization Lead), Momen Sanad (Performance Analyst), Khalid Mohamed (Code Integrator / Tester), Abdelrahman Abdelrassoul (Documentation Coordinator) · Repository: github.com/0x3mr/crazy-taxi</p>
 
 ## 1. Dataset and preprocessing
 

@@ -8,7 +8,7 @@ SW 401 Parallel and Distributed Systems, Fall 2025 – team Crazy Taxi
 |---|---|---|
 | Amr Abdelfattah | Parallelization Lead | OpenMP aggregation (thread-local tables, reduction / atomic / critical variants), schedules |
 | Momen Sanad | Performance Analyst | Benchmark runs, speedup / efficiency / serial-fraction tables, Amdahl and Gustafson analysis, plots |
-| Khalid | Code Integrator / Tester | CMake build, synthetic tests, serial-vs-parallel validation, cache and false-sharing experiments |
+| Khalid Mohamed | Code Integrator / Tester | CMake build, synthetic tests, serial-vs-parallel validation, cache and false-sharing experiments |
 | Abdelrahman Abdelrassoul | Documentation Coordinator | Preprocessing write-up, README, report, demo video |
 
 Everyone reviews the others' pull requests, and each phase's work is split so that
