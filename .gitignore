@@ -1,5 +1,7 @@
-/data/
-/build/
+/data/*
+!/data/README.md
+!/data/sample/
+/build*/
 /cmake-build-*/
 *.o
 *.obj
