@@ -1,0 +1,82 @@
+{
+  "original_dataset_size_bytes": 829973299,
+  "original_record_count": 48722602,
+  "final_dataset_size_bytes": 536349586,
+  "final_record_count": 47316745,
+  "discarded_record_count": 1405857,
+  "discarded_by_reason": {
+    "invalid_timestamp": 0,
+    "out_of_period": 29,
+    "invalid_zone": 0,
+    "invalid_distance": 1402958,
+    "distance_outlier": 2870,
+    "duplicate": 0
+  },
+  "max_distance_miles": 100.0,
+  "months": [
+    {
+      "file": "yellow_tripdata_2025-01.parquet",
+      "raw_records": 3475226,
+      "clean_records": 3384150
+    },
+    {
+      "file": "yellow_tripdata_2025-02.parquet",
+      "raw_records": 3577543,
+      "clean_records": 3477600
+    },
+    {
+      "file": "yellow_tripdata_2025-03.parquet",
+      "raw_records": 4145257,
+      "clean_records": 4041319
+    },
+    {
+      "file": "yellow_tripdata_2025-04.parquet",
+      "raw_records": 3970553,
+      "clean_records": 3878808
+    },
+    {
+      "file": "yellow_tripdata_2025-05.parquet",
+      "raw_records": 4591845,
+      "clean_records": 4450353
+    },
+    {
+      "file": "yellow_tripdata_2025-06.parquet",
+      "raw_records": 4322960,
+      "clean_records": 4187800
+    },
+    {
+      "file": "yellow_tripdata_2025-07.parquet",
+      "raw_records": 3898963,
+      "clean_records": 3774914
+    },
+    {
+      "file": "yellow_tripdata_2025-08.parquet",
+      "raw_records": 3574091,
+      "clean_records": 3468661
+    },
+    {
+      "file": "yellow_tripdata_2025-09.parquet",
+      "raw_records": 4251015,
+      "clean_records": 4126318
+    },
+    {
+      "file": "yellow_tripdata_2025-10.parquet",
+      "raw_records": 4428699,
+      "clean_records": 4302871
+    },
+    {
+      "file": "yellow_tripdata_2025-11.parquet",
+      "raw_records": 4181444,
+      "clean_records": 4071798
+    },
+    {
+      "file": "yellow_tripdata_2025-12.parquet",
+      "raw_records": 4305006,
+      "clean_records": 4152153
+    }
+  ],
+  "clean_distance_min": 0.01,
+  "clean_distance_max": 99.82,
+  "clean_distance_mean": 3.5035811484919344,
+  "seconds": 45.1
+}
